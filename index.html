@@ -29,9 +29,7 @@
             ">
             Press here
             <br>
-            to enter the WebAR-Haiku-Booklet 
-	    <br>
-            "of Anastasia's English School"
+            to enter the experience
         </div>
     </div>
 
@@ -153,13 +151,13 @@
                 // Створюємо головну групу для всіх 3D об'єктів
                 mainContainer = new THREE.Group();
 
-		// Масив назв файлів .patt. Масив заповнюється в порядку додавання маркерів
+                // Масив назв файлів .patt. Масив заповнюється в порядку додавання маркерів
                 // якщо замість .patt було додано баркод, на його місце в масив додається порожній рядок
-                const patternNames = ["pattern-picture.patt"];
+                const patternNames = ["pattern-picture.png"];
                 // Масив баркодів, заповнюється одночасно з масивом патернів
                 // якщо замість баркоду був доданий .patt, на його місце масив додається -1
                 const patternBarcode = [-1];
-		// Масив типів контенту кожного маркера, заповнюється значеннями: зображення, модель, відео
+                // Масив типів контенту кожного маркера, заповнюється значеннями: зображення, модель, відео
                 const modes = ["image"];
                 // Масив файлів моделей, якщо немає моделі буде додано порожній рядок
                 const modelFiles = [""];
@@ -207,12 +205,13 @@
                                 const test = new THREE.GLTF2Loader().load(`${modelFiles[i]}`, (response) => {
                                     const scene = response.scene;
                                     const object = scene.children[0];
-									
-                                    						    						    
-    				    }
-									
-                                   					 
-					
+                                    // Іноді модель не можна побачити з кількох причин, найчастіше варто збільшити чи зменшити у 100 разів.
+                                    // Читайте: https://threejs.org/docs/index.html#manual/en/introduction/Loading-3D-models
+                                    // Тут ми зменшуємо її, щоб точно побачити її на сцені. Ви можете видалити цю шкалу, якщо потрібно
+                                    object.scale.set(0.01, 0.01, 0.01);
+                                    // Ви можете самостійно змінити поворот або позицію моделі
+                                    // object.position.set(0, Math.PI / 2, Math.PI / 4);
+                                    // object.rotation.set(0, Math.PI / 2, Math.PI / 4);
                                     // Додавання нашої моделі до контейнера групи маркерів
                                     markerRoots[i].add(object);
                                     resolve(modelFiles[i])
